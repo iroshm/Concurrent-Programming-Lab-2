@@ -4,11 +4,11 @@ import java.util.concurrent.Semaphore;
 
 public class BusHalt {
 	
-	private static int ridersCount = 0;
-    private static int maximumBusCapacity = 50;
+	private static int riderCount = 0;
+    private static int maxBusCapacity = 50;
 
-    // Semaphore used for riders to enter the waiting area, allowing 50 riders to remain at the waiting area
-    private static final Semaphore riderWaitingAreaEntranceSem = new Semaphore(maximumBusCapacity);
+    // Semaphore used for riders to enter the waiting area, allowing 50 riders to remain at the bus-halt
+    private static final Semaphore busHaltEntranceSem = new Semaphore(maxBusCapacity);
 
     // Semaphore used for riders to enter the boarding area
     private static final Semaphore riderBoardingAreaEntranceSem = new Semaphore(0);
@@ -21,22 +21,22 @@ public class BusHalt {
 
     //Method to get the riders count
     public int getRidersCount() {
-        return ridersCount;
+        return riderCount;
     }
 
     //Method to increment the riders count
     public void incrementRidersCount() {
-        ridersCount++;
+        riderCount++;
     }
 
     //Method to decrement the riders count
     public void decrementRidersCount() {
-        ridersCount--;
+        riderCount--;
     }
 
     //Method to access the semaphore that is used for riders to enter the waiting area
-    public static Semaphore getRiderWaitingAreaEntranceSem() {
-        return riderWaitingAreaEntranceSem;
+    public static Semaphore getBusHaltEntranceSem() {
+        return busHaltEntranceSem;
     }
 
     //Method to access the semaphore that is used for riders to board the bus

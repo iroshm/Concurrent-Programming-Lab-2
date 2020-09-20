@@ -20,18 +20,18 @@ public class RiderCreator implements Runnable{
 	    public void run() {
 
 	        int riderIndex = 1;
-	        // Spawning rider threads for the user specified value
+	        // Starting rider threads for the user specified value
 	        while (!Thread.currentThread().isInterrupted()) {
 
 	            try {
 	                // Initializing and starting the rider threads
-	                Rider rider = new Rider(waitingArea.getRiderWaitingAreaEntranceSem(), waitingArea.getRiderBoardingAreaEntranceSem(), waitingArea.getBusDepartureSem(), waitingArea.getMutex(), riderIndex, waitingArea);
+	                Rider rider = new Rider(waitingArea.getBusHaltEntranceSem(), waitingArea.getRiderBoardingAreaEntranceSem(), waitingArea.getBusDepartureSem(), waitingArea.getMutex(), riderIndex, waitingArea);
 	                (new Thread(rider)).start();
 
 	                riderIndex++;
-	                // Sleeping the thread to obtain the inter arrival time between the threads
+	                // Sleeping the thread to obtain the arrival time between the threads
 	                Thread.sleep(getExponentiallyDistributedRiderInterArrivalTime());
-
+	                // Catch exception
 	            } catch (InterruptedException e) {
 	                e.printStackTrace();
 	            }

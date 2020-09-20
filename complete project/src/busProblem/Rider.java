@@ -32,15 +32,15 @@ public class Rider implements Runnable{
             	//people count in bus halt is a shared variable , So before updating it each rider should lock it
         		//After bus arriving riders will wait here. They can't access waiting_rider_count
                 mutex.acquire();
-                	System.out.println("---Rider " + id + " entered to the boarding area---");
+                	System.out.println("---Rider " + id + " entered into the bus-halt---");
                 	halt.incrementRidersCount();
                 mutex.release();
 
                 // After arriving to the bus halt rider wait for a bus
-                // Because each thread trying to aquire the lock which semaphore count is 0
+                // Because each thread trying to acquire the lock which semaphore count is 0
                 //then each rider will block here until bus thread release the lock
                 semaphore_for_rider_boarding.acquire();
-                System.out.println("Rider " + id + " boarded in to the bus");
+                System.out.println("---Rider " + id + " boarded into the bus---");
 
             // Releasing the semaphore for enter to bus halt
                 semaphore_for_handle_waiting_area_riders.release();

@@ -32,8 +32,8 @@ public class Bus implements Runnable{
         	//When bus arrives to the halt shared variable will lock by the bus thread
             mutex.acquire();
                 
-	            System.out.println("Bus " + id + " arrived to the bus halt");
-	            System.out.println("Meanwhile there are " + halt.getRidersCount() + " riders waiting there");
+	            System.out.println("Bus " + id + " arrived to the bus-halt.");
+	            System.out.println("There are " + halt.getRidersCount() + " riders waiting currently.");
 
                 // check the waiting rider count larger than 0 or not
                 if (halt.getRidersCount() > 0) {
@@ -48,7 +48,7 @@ public class Bus implements Runnable{
             mutex.release();
 
            
-            System.out.println("Bus " + id + " departed from the bus halt");
+            System.out.println("Bus " + id + " departed from the bus-halt.");
             
         } catch (InterruptedException e) {
             e.printStackTrace();
