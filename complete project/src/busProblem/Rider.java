@@ -33,7 +33,7 @@ public class Rider implements Runnable{
         		//After bus arriving riders will wait here. They can't access waiting_rider_count
                 mutex.acquire();
                 	System.out.println("---Rider " + id + " entered into the bus-halt---");
-                	halt.incrementRidersCount();
+                	halt.incrementRiders();
                 mutex.release();
 
                 // After arriving to the bus halt rider wait for a bus
@@ -49,7 +49,7 @@ public class Rider implements Runnable{
                 halt.decrementRidersCount();
 
           //indicate to bus thread that riders successfully got onboard
-            if (halt.getRidersCount() == 0)
+            if (halt.getNumberOfRiders() == 0)
             	semaphore_for_bus_depature.release();
             
             else

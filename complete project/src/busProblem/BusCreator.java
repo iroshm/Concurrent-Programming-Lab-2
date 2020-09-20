@@ -6,44 +6,45 @@ import java.util.Random;
 
 public class BusCreator implements Runnable {
 	
-	private float arrivalMeanTime;
-    private BusHalt waitingArea;
-    private static Random random;
+    private BusHalt halt;
+    private static Random rand;
+    private float meanArrivalTime;
 
-    public BusCreator(float arrivalMeanTime, BusHalt waitingArea) {
-        this.arrivalMeanTime = arrivalMeanTime;
-        this.waitingArea = waitingArea;
-        random = new Random();
+    public BusCreator(float meanArrivalTime, BusHalt halt) {
+        this.meanArrivalTime = meanArrivalTime;
+        this.halt = halt;
+        rand = new Random();
     }
 
     @Override
     public void run() {
 
-        int busIndex = 1;
+        int indexOfBus = 1;
 
-        // Spawning bus threads for the user specified value
+        // Creating threads for busses
         while (!Thread.currentThread().isInterrupted()) {
 
             try {
-                // Initializing and starting the bus threads
-                Bus bus = new Bus(waitingArea.getRiderBoardingAreaEntranceSem(), waitingArea.getBusDepartureSem(), waitingArea.getMutex(), busIndex, waitingArea);
+                // Initializing the bus threads
+                Bus bus = new Bus(halt.getRiderBoardingAreaEntranceSem(), halt.getBusDepartureSem(), halt.getMutex(), indexOfBus, halt);
+                // Starting the bus threads
                 (new Thread(bus)).start();
 
-                busIndex++;
-                // Sleeping the thread to obtain the inter arrival time between the bus threads
-                Thread.sleep(getExponentiallyDistributedBusInterArrivalTime());
-
+                indexOfBus++;
+                // Sleeping the thread with arrival time between the busses
+                Thread.sleep(getExpoDistBusInterArrivalTime());
+                // Catch exceptions
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        System.out.println("All buses have finished arriving");
+        System.out.println("Finished arriving busses.");
     }
 
-    // Method to get the exponentially distributed bus inter arrival time
-    public long getExponentiallyDistributedBusInterArrivalTime() {
-        float lambda = 1 / arrivalMeanTime;
-        return Math.round(-Math.log(1 - random.nextFloat()) / lambda);
+    // Exponentially distributed time
+    public long getExpoDistBusInterArrivalTime() {
+        float lambda = 1 / meanArrivalTime;
+        return Math.round(-Math.log(1 - rand.nextFloat()) / lambda);
     }
 
 }

@@ -5,42 +5,43 @@ import java.util.Random;
 
 public class RiderCreator implements Runnable{
 
-	
-	 private float arrivalMeanTime;
-	    private BusHalt waitingArea;
-	    private static Random random;
+	    private BusHalt halt;
+	    private static Random rand;
+	    private float meanArrivalTime;
 
-	    public RiderCreator(float arrivalMeanTime, BusHalt waitingArea) {
-	        this.arrivalMeanTime = arrivalMeanTime;
-	        this.waitingArea = waitingArea;
-	        random = new Random();
+	    public RiderCreator(float meanArrivalTime, BusHalt halt) {
+	        this.meanArrivalTime = meanArrivalTime;
+	        this.halt = halt;
+	        rand = new Random();
 	    }
 
 	    @Override
 	    public void run() {
 
-	        int riderIndex = 1;
-	        // Starting rider threads for the user specified value
+	        int indexOfRider = 1;
+	        
+	        // Creating rider threads 
 	        while (!Thread.currentThread().isInterrupted()) {
 
 	            try {
-	                // Initializing and starting the rider threads
-	                Rider rider = new Rider(waitingArea.getBusHaltEntranceSem(), waitingArea.getRiderBoardingAreaEntranceSem(), waitingArea.getBusDepartureSem(), waitingArea.getMutex(), riderIndex, waitingArea);
+	                // Initializing the rider threads
+	                Rider rider = new Rider(halt.getBusHaltEntranceSem(), halt.getRiderBoardingAreaEntranceSem(), halt.getBusDepartureSem(), halt.getMutex(), indexOfRider, halt);
+	                // Starting the rider threads
 	                (new Thread(rider)).start();
 
-	                riderIndex++;
-	                // Sleeping the thread to obtain the arrival time between the threads
-	                Thread.sleep(getExponentiallyDistributedRiderInterArrivalTime());
+	                indexOfRider++;
+	                // Sleeping the thread with arrival time between riders
+	                Thread.sleep(getExpoDistRiderInterArrivalTime());
 	                // Catch exception
 	            } catch (InterruptedException e) {
 	                e.printStackTrace();
 	            }
 	        }
 	    }
-
-	    public long getExponentiallyDistributedRiderInterArrivalTime() {
-	        float lambda = 1 / arrivalMeanTime;
-	        return Math.round(-Math.log(1 - random.nextFloat()) / lambda);
+	    // Exponentially distributed time
+	    public long getExpoDistRiderInterArrivalTime() {
+	        float lambda = 1 / meanArrivalTime;
+	        return Math.round(-Math.log(1 - rand.nextFloat()) / lambda);
 	    }
 
 

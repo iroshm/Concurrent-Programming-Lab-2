@@ -33,10 +33,10 @@ public class Bus implements Runnable{
             mutex.acquire();
                 
 	            System.out.println("Bus " + id + " arrived to the bus-halt.");
-	            System.out.println("There are " + halt.getRidersCount() + " riders waiting currently.");
+	            System.out.println("There are " + halt.getNumberOfRiders() + " riders waiting currently.");
 
                 // check the waiting rider count larger than 0 or not
-                if (halt.getRidersCount() > 0) {
+                if (halt.getNumberOfRiders() > 0) {
 
                 	// Bus thread turn semaphore count to 1 and give chance one thread to come in to the bus 
                 	semaphore_for_rider_boarding.release();
